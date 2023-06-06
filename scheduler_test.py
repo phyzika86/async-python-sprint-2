@@ -2,9 +2,21 @@ import unittest
 
 import pickle
 import os
+import scheduler
+from config import SAVED_TASK_DIR
 
 
 class TaskTestCase(unittest.TestCase):
+    @classmethod
+    def setUpClass(cls):
+        if not os.path.exists('test/'):
+            os.mkdir('test')
+
+        if not os.path.exists(SAVED_TASK_DIR):
+            os.mkdir(SAVED_TASK_DIR)
+
+        scheduler.main()
+
     def test_create_delete_dir(self):
         dirs = set()
         with open(f"test/tasks.txt", 'rb') as f:
@@ -35,8 +47,9 @@ class TaskTestCase(unittest.TestCase):
                 except EOFError:
                     break
         for el in files:
-            self.assertEqual(os.path.exists('tmp/'+el+'.txt'), True)
+            self.assertEqual(os.path.exists('tmp/' + el + '.txt'), True)
 
 
 if __name__ == '__main__':
+    TaskTestCase.create_test_dir()
     unittest.main()

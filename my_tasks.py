@@ -165,7 +165,19 @@ def get_tasks():
                 'name_file': UUIDS.get('uuid_7'),
             }
         },
+        {
+            'target': create_dir,
+            'start_at': datetime.now() + timedelta(seconds=10),
+            'retries': 10,
+            'kwargs': {
+                'uuid': UUIDS.get('uuid_12'),
+                'name_dir': UUIDS.get('uuid_12'),
+            }
+        },
     ]
+
+    if not os.path.exists('test/'):
+        os.mkdir('test')
 
     shutil.rmtree(f"test/tasks.txt", ignore_errors=True)
     with open(f"test/tasks.txt", 'wb') as f:
@@ -173,3 +185,7 @@ def get_tasks():
             pickle.dump(task, f, protocol=pickle.HIGHEST_PROTOCOL)
 
     return TASKS
+
+
+if __name__ == '__main__':
+    get_tasks()
